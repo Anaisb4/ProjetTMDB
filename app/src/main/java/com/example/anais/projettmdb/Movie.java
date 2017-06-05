@@ -1,7 +1,9 @@
 package com.example.anais.projettmdb;
 
+import java.util.LinkedList;
+
 /**
- * Created by Pro on 05/06/2017.
+ * Created by Victor and Anais on 05/06/2017.
  */
 
 public class Movie {
@@ -11,20 +13,22 @@ public class Movie {
     private String description;
     private String origine;
     private String date;
-    private String genre;
+    private LinkedList<String> genre;
     private Double rating;
 
 
     //Constructeur de l'objet Movie
-    public Movie(int imageId, String title, String desc, String description, String origine, String date, String genre, Double rating)
+    public Movie(int imageId, String title, String description, String origine, String date, LinkedList<String> genre, Double rating)
     {
         this.imageId = imageId;
         this.title = title;
         this.description = description;
         this.origine = origine;
         this.date = date;
-        this.genre = genre;
         this.rating = rating;
+
+        this.genre = new LinkedList<String>();
+        this.genre.addAll(genre);
     }
 
 
@@ -70,11 +74,11 @@ public class Movie {
         this.date = date;
     }
 
-    public String getGenre() {
+    public LinkedList<String> getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(LinkedList<String> genre) {
         this.genre = genre;
     }
 
@@ -94,7 +98,7 @@ public class Movie {
                 ", description='" + description + '\'' +
                 ", origine='" + origine + '\'' +
                 ", date='" + date + '\'' +
-                ", genre='" + genre + '\'' +
+                ", genre=" + genre +
                 ", rating=" + rating +
                 '}';
     }
