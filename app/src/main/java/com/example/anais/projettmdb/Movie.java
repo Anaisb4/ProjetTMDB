@@ -20,7 +20,7 @@ public class Movie {
     //Constructeur de l'objet Movie
     public Movie(String image, String title, String description, String origine, String date, LinkedList<String> genre, Double rating)
     {
-        this.image = image;
+        this.image = "https://image.tmdb.org/t/p/w185/" +image;
         this.title = title;
         this.description = description;
         this.origine = origine;
@@ -82,8 +82,9 @@ public class Movie {
         this.genre = genre;
     }
 
-    public Double getRating() {
-        return rating;
+    public float getRating() {
+        float f = new Float(rating);
+        return f/2;
     }
 
     public void setRating(Double rating) {

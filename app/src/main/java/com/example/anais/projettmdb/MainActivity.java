@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,7 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class MainActivity extends Activity implements OnItemClickListener {
+public class MainActivity extends Activity implements OnItemClickListener, AdapterView.OnItemSelectedListener {
 
     List<Movie> listMovie;
     HashMap<Integer, String> listGenre;
@@ -47,6 +49,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         listMovie = new ArrayList<Movie>();
         listGenre = new HashMap<Integer, String>();
 
@@ -96,7 +99,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
                         //A IMPLEMENTER
                         String title = jsonMovie.getString("title");
-                        String image = jsonMovie.getString("backdrop_path");
+                        String image = jsonMovie.getString("poster_path");
                         String description = jsonMovie.getString("overview");
                         String origine = jsonMovie.getString("original_language");
                         String  date = jsonMovie.getString("release_date");
@@ -173,5 +176,17 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
         }
         return genre;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+    }
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
     }
 }

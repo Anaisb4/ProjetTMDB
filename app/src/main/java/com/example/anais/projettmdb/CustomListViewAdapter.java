@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import com.example.anais.projettmdb.R;
 import com.example.anais.projettmdb.Movie;
+import com.squareup.picasso.Picasso;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 
@@ -38,7 +41,7 @@ public class CustomListViewAdapter extends ArrayAdapter<Movie> {
         TextView txtTitle;
         TextView txtGenre;
         TextView txtDate;
-        TextView txtNote;
+        RatingBar txtNote;
     }
 
     public View getView(int position, View convertView, ViewGroup parent)
@@ -54,7 +57,7 @@ public class CustomListViewAdapter extends ArrayAdapter<Movie> {
             holder = new ViewHolder();
             holder.txtGenre = (TextView) convertView.findViewById(R.id.genre);
             holder.txtDate = (TextView) convertView.findViewById(R.id.date);
-           // holder.txtNote = (TextView) convertView.findViewById(R.id.note);
+            holder.txtNote = (RatingBar) convertView.findViewById(R.id.note);
             holder.txtTitle = (TextView) convertView.findViewById(R.id.title);
             holder.imageView = (ImageView) convertView.findViewById(R.id.icon);
 
@@ -74,8 +77,9 @@ public class CustomListViewAdapter extends ArrayAdapter<Movie> {
 
         holder.txtGenre.setText(genre_tostring);
         holder.txtDate.setText(movie.getDate());
-       //holder.txtNote.setText(movie.getRating().toString());
+        holder.txtNote.setRating(movie.getRating());
         holder.txtTitle.setText(movie.getTitle());
+        Picasso.with(context).load(movie.getImage()).into(holder.imageView);
         //holder.imageView.setImageResource(movie.getImage());
 
         return convertView;

@@ -2,4 +2,10 @@
     <string name="app_name">ProjetTMDB</string>
     <string name="name">ListViewBaseAdapter</string>
     <string name="image">Thumbnail</string>
+
+    <string-array name="spinner_array">
+        <item>Date</item>
+        <item>Nom</item>
+        <item>Note</item>
+    </string-array>
 </resources>
