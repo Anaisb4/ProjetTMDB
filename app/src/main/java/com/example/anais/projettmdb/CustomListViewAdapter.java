@@ -11,6 +11,7 @@ import com.example.anais.projettmdb.R;
 import com.example.anais.projettmdb.Movie;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,16 +67,16 @@ public class CustomListViewAdapter extends ArrayAdapter<Movie> {
         LinkedList<String> listeGenre = new LinkedList<>();
         listeGenre.addAll(movie.getGenre());
         String genre_tostring = "";
-
         for(String genre : listeGenre){
             genre_tostring += genre + ", ";
         }
+        if(genre_tostring!=""){genre_tostring = genre_tostring.substring(0,genre_tostring.length()-2);}
 
         holder.txtGenre.setText(genre_tostring);
         holder.txtDate.setText(movie.getDate());
         holder.txtNote.setText(movie.getRating().toString());
         holder.txtTitle.setText(movie.getTitle());
-        holder.imageView.setImageResource(movie.getImageId());
+        //holder.imageView.setImageResource(movie.getImage());
 
         return convertView;
     }

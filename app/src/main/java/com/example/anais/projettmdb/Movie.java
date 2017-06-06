@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 public class Movie {
 
-    private int imageId;
+    private String image;
     private String title;
     private String description;
     private String origine;
@@ -18,9 +18,9 @@ public class Movie {
 
 
     //Constructeur de l'objet Movie
-    public Movie(int imageId, String title, String description, String origine, String date, LinkedList<String> genre, Double rating)
+    public Movie(String image, String title, String description, String origine, String date, LinkedList<String> genre, Double rating)
     {
-        this.imageId = imageId;
+        this.image = image;
         this.title = title;
         this.description = description;
         this.origine = origine;
@@ -34,12 +34,12 @@ public class Movie {
 
     //Getters et Setters
 
-    public int getImageId() {
-        return imageId;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public void setImage(int imageId) {
+        this.image = image;
     }
 
     public String getTitle() {
@@ -93,7 +93,7 @@ public class Movie {
     @Override
     public String toString() {
         return "Movie{" +
-                "imageId=" + imageId +
+                "image=" + image +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", origine='" + origine + '\'' +
