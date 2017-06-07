@@ -26,7 +26,6 @@ public class Movie {
         this.origine = origine;
         this.date = date;
         this.rating = rating;
-
         this.genre = new LinkedList<String>();
         this.genre.addAll(genre);
     }

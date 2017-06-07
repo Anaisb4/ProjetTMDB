@@ -19,7 +19,7 @@
         tools:layout_editor_absoluteY="16dp" />
 
     <TextView
-        android:id="@+id/titre_port"
+        android:id="@+id/titre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Titre"
@@ -27,18 +27,18 @@
         tools:layout_editor_absoluteY="16dp" />
 
     <RatingBar
-        android:id="@+id/ratingBar"
+        android:id="@+id/rating"
         android:layout_width="241dp"
         android:layout_height="62dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/Synopsis"
         android:layout_width="361dp"
         android:layout_height="27dp"
         android:text="Synopsis:"
@@ -46,7 +46,7 @@
         tools:layout_editor_absoluteY="249dp" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/description"
         android:layout_width="366dp"
         android:layout_height="155dp"
         android:text="TextView"
@@ -54,7 +54,7 @@
         tools:layout_editor_absoluteY="276dp" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/categorie"
         android:layout_width="165dp"
         android:layout_height="59dp"
         android:text="Action, Thriller"
@@ -70,7 +70,7 @@
         tools:layout_editor_absoluteY="94dp" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="18-01-1996"
@@ -78,7 +78,7 @@
         tools:layout_editor_absoluteY="60dp" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/dateSortie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Date de sortie:"

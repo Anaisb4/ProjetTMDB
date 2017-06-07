@@ -85,5 +85,4 @@ public class CustomListViewAdapter extends ArrayAdapter<Movie> {
 
         return convertView;
     }
-
 }

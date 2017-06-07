@@ -1,6 +1,7 @@
 package com.example.anais.projettmdb;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,12 +32,14 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends Activity implements OnItemClickListener {
-    final String EXTRA_NOMFILM = "nom_film";
-    final String EXTRA_NBRELEM = "nbr_elem";
+    int tailleListe = 0;
+    int nbrAffiche = 0;
     ArrayList<Movie> listMovie;
     HashMap<Integer, String> listGenre;
     ListView listView;
-
+    ArrayList<Movie> listMovieAffiche;
+    int nbrElem;
+    int nbrMoviePage;
     RequestQueue request;
 
     /** Appelé à la création de l'activité **/
@@ -46,36 +49,88 @@ public class MainActivity extends Activity implements OnItemClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*Button prec = (Button) findViewById(R.id.precedent);
-        Button suiv = (Button) findViewById(R.id.suivant);*/
+        final Button prec = (Button) findViewById(R.id.boutonPrecedent);
+        final Button suiv = (Button) findViewById(R.id.boutonSuivant);
 
         //Récupération des éléemnts passer entre activité
         Intent intent = getIntent();
         if (intent != null) {
-            Log.v("ERREUR", "DEDANS");
             String nomFilm = intent.getExtras().getString("nomFilm");
-            int nbrElem = Integer.parseInt(intent.getExtras().getString("nbElem"));
+            nbrElem = Integer.parseInt(intent.getExtras().getString("nbElem"));
             listMovie = new ArrayList<Movie>();
             listGenre = new HashMap<Integer, String>();
 
             this.request = Volley.newRequestQueue(this);
 
             listView = (ListView) findViewById(R.id.list);
-
             loadGenres();
             getMovies(nomFilm);
-
-            CustomListViewAdapter adapter = new CustomListViewAdapter(this, R.layout.list_item, listMovie);
-            //On désactive le clique sur le bouton précédent à la première exécution
-            //prec.setEnabled(false);
-
-            listView.setAdapter(adapter);
-            listView.setAdapter(adapter);
-
-            listView.setOnItemClickListener(this);
+            Log.v("ERREUR", String.valueOf(this.listMovie.size()));
+            /*if(tailleListe!=0) {
+                int i = 0;
+                listMovieAffiche=new ArrayList<>();
+                while (tailleListe<=nbrAffiche && i<=nbrElem){
+                    listMovieAffiche.add(listMovie.get(i));
+                    i++;
+                    nbrAffiche++;
+                }
+                nbrMoviePage=i;
+                //On désactive le clique sur le bouton précédent à la première exécution
+                prec.setEnabled(false);*/
+                CustomListViewAdapter adapter = new CustomListViewAdapter(this, R.layout.list_item, this.listMovie);
+                listView.setAdapter(adapter);
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(this);
+            /*} else {
+                Toast.makeText(this, "La recherche n'a renvoyé aucun résultat", Toast.LENGTH_SHORT).show();
+                finish();
+            }*/
         } else {
-            return;
+            finish();
         }
+
+        //Au clic sur les boutons suivant où précédent on charge les nouveaux films
+        /*prec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //On charge les n précédents films
+                listMovieAffiche.clear();
+                nbrAffiche=nbrAffiche-nbrMoviePage-nbrElem;
+                int i=nbrAffiche;
+                while (tailleListe<=nbrAffiche && i<=nbrAffiche+nbrElem){
+                    listMovieAffiche.add(listMovie.get(i));
+                    i++;
+                    nbrAffiche++;
+                }
+                nbrMoviePage=i;
+                if(nbrAffiche<=nbrElem){
+                    //Si le nombre d'élement afficher correspond à une seule page alors on ne peux pas cliquer sur précédent
+                    prec.setEnabled(false);
+                }
+            }
+        });
+        suiv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //On charge les n précédents films
+                listMovieAffiche.clear();
+                int i=0;
+                while (tailleListe<=nbrAffiche && i<=nbrElem){
+                    listMovieAffiche.add(listMovie.get(i));
+                    i++;
+                    nbrAffiche++;
+                }
+                nbrMoviePage=i;
+                if(nbrAffiche==tailleListe){
+                    //Si le nombre d'élement afficher correspond au nombre de film trouvé alors on ne peux pas cliquer sur suivant
+                    suiv.setEnabled(false);
+                }
+            }
+        });*/
+    }
+
+    public void afficheElem(){
+
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -117,9 +172,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
                         Movie newMovie = new Movie(image,title, description,origine,date,genreList, rating);
                         listMovie.add(newMovie);
                     }
+                    tailleListe = listMovie.size();
                 } catch (JSONException e) {
                     Log.v("ERREUR", e.toString());
-
                 }
             }
         }, new Response.ErrorListener() {
@@ -142,7 +197,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
             public void onResponse(JSONObject response) {
 
                 try {
-
                     JSONArray jsonArray = response.getJSONArray("genres");
 
                     for (int i=0; i< jsonArray.length(); i++) {
@@ -188,11 +242,29 @@ public class MainActivity extends Activity implements OnItemClickListener {
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
+        // On récupère l'élément sélectionner
         String item = parent.getItemAtPosition(position).toString();
-
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        Movie movieSelect = null;
+        // On affiche sa fiche
+        Intent versFicheMovie = new Intent(MainActivity.this,Portfolio.class);
+        for(Movie movie : listMovie){
+            if(movie.getTitle()==item){
+                movieSelect = movie;
+                String listeGenre = "";
+                for(String genre : movie.getGenre()){
+                    listeGenre=genre+", ";
+                }
+                if(listeGenre!=""){listeGenre = listeGenre.substring(0,listeGenre.length()-2);}
+                break;
+            }
+        }
+        versFicheMovie.putExtra("nomFilm", movieSelect.getTitle());
+        versFicheMovie.putExtra("image", movieSelect.getImage());
+        versFicheMovie.putExtra("description", movieSelect.getDescription());
+        versFicheMovie.putExtra("date", movieSelect.getDate());
+        versFicheMovie.putExtra("rating", movieSelect.getRating());
+        versFicheMovie.putExtra("genre", listGenre);
+        startActivity(versFicheMovie);
     }
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
