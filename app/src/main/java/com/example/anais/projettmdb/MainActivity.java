@@ -111,6 +111,7 @@ public class MainActivity extends Activity implements OnItemClickListener, Adapt
                     }
                 } catch (JSONException e) {
                     Log.v("ERREUR", e.toString());
+
                 }
             }
         }, new Response.ErrorListener() {
