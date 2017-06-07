@@ -179,6 +179,7 @@ public class MainActivity extends Activity implements OnItemClickListener, Adapt
         return genre;
     }
 
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
