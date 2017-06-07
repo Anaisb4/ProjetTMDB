@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main);
         final Spinner nbr = (Spinner) findViewById(R.id.nbr);
         final EditText edit = (EditText) findViewById(R.id.nomFilm);
 

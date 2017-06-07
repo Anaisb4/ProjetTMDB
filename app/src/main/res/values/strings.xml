@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjetTMDB</string>
+    <string name="app_name">MyMovieFinder</string>
     <string name="name">ListViewBaseAdapter</string>
     <string name="image">Thumbnail</string>
 
