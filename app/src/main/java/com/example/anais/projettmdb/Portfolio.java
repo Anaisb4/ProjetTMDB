@@ -23,7 +23,7 @@ public class Portfolio extends AppCompatActivity {
         String image = intent.getExtras().getString("image");
         String description =intent.getExtras().getString("description");
         String date = intent.getExtras().getString("date");
-        String rating =intent.getExtras().getString("rating");
+        float rating =intent.getExtras().getFloat("rating");
         String genre = intent.getExtras().getString("genre");
 
         //Affichage des éléments
@@ -39,6 +39,6 @@ public class Portfolio extends AppCompatActivity {
         dateText.setText(date);
         categorie.setText(genre);
         descriptionText.setText(description);
-        note.setRating(Float.parseFloat(rating)/2);
+        note.setRating(rating);
     }
 }
