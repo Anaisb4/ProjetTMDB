@@ -24,26 +24,30 @@
         android:layout_height="wrap_content"
         android:text="Titre"
         tools:layout_editor_absoluteX="213dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:layout_marginBottom="7dp"
+        app:layout_constraintBottom_toTopOf="@+id/dateSortie"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp" />
 
     <RatingBar
         android:id="@+id/rating"
         android:layout_width="241dp"
         android:layout_height="62dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="441dp"
+        app:layout_constraintHorizontal_bias="0.503" />
 
     <TextView
         android:id="@+id/Synopsis"
         android:layout_width="361dp"
-        android:layout_height="27dp"
+        android:layout_height="0dp"
         android:text="Synopsis:"
         tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="249dp" />
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/description" />
 
     <TextView
         android:id="@+id/description"
@@ -51,20 +55,24 @@
         android:layout_height="155dp"
         android:text="TextView"
         tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="276dp" />
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/rating" />
 
     <TextView
         android:id="@+id/categorie"
         android:layout_width="165dp"
-        android:layout_height="59dp"
+        android:layout_height="0dp"
         android:text="Action, Thriller"
         tools:layout_editor_absoluteX="213dp"
-        tools:layout_editor_absoluteY="142dp" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/Synopsis" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="Catégories:"
         tools:layout_editor_absoluteX="213dp"
         tools:layout_editor_absoluteY="94dp" />
@@ -72,15 +80,19 @@
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="18-01-1996"
         tools:layout_editor_absoluteX="213dp"
-        tools:layout_editor_absoluteY="60dp" />
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/dateSortie"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintVertical_bias="0.555" />
 
     <TextView
         android:id="@+id/dateSortie"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="Date de sortie:"
         tools:layout_editor_absoluteX="213dp"
         tools:layout_editor_absoluteY="43dp" />
