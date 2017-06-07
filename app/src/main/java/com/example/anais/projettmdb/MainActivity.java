@@ -1,5 +1,6 @@
 package com.example.anais.projettmdb;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,30 +15,25 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.anais.projettmdb.R;
-import com.example.anais.projettmdb.CustomListViewAdapter;
-import com.example.anais.projettmdb.Movie;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class MainActivity extends Activity implements OnItemClickListener, AdapterView.OnItemSelectedListener {
-
-    List<Movie> listMovie;
+public class MainActivity extends Activity implements OnItemClickListener {
+    final String EXTRA_NOMFILM = "nom_film";
+    final String EXTRA_NBRELEM = "nbr_elem";
+    ArrayList<Movie> listMovie;
     HashMap<Integer, String> listGenre;
     ListView listView;
 
@@ -50,21 +46,33 @@ public class MainActivity extends Activity implements OnItemClickListener, Adapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listMovie = new ArrayList<Movie>();
-        listGenre = new HashMap<Integer, String>();
+        Button prec = (Button) findViewById(R.id.precedent);
+        Button suiv = (Button) findViewById(R.id.suivant);
 
-        this.request = Volley.newRequestQueue(this);
+        //Récupération des éléemnts passer entre activité
+        Intent intent = getIntent();
+        if (intent != null) {
+            String nomFilm = intent.getStringExtra(EXTRA_NOMFILM);
+            int nbrElem = Integer.parseInt(intent.getStringExtra(EXTRA_NBRELEM));
+            listMovie = new ArrayList<Movie>();
+            listGenre = new HashMap<Integer, String>();
 
-        listView = (ListView) findViewById(R.id.list);
+            this.request = Volley.newRequestQueue(this);
 
-        loadGenres();
-        getMovies("Tarzan");
+            listView = (ListView) findViewById(R.id.list);
 
+            loadGenres();
+            getMovies(nomFilm);
 
-        CustomListViewAdapter adapter = new CustomListViewAdapter(this, R.layout.list_item, listMovie);
+                CustomListViewAdapter adapter = new CustomListViewAdapter(this, R.layout.list_item, listMovie);
+                //On désactive le clique sur le bouton précédent à la première exécution
+                prec.setEnabled(false);
 
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(this);
+        } else {
+            return;
+        }
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -75,9 +83,9 @@ public class MainActivity extends Activity implements OnItemClickListener, Adapt
     }
 
     public void getMovies(String nomFilm){
-
+        listMovie = new ArrayList<Movie>();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.themoviedb.org/3/search/movie?api_key=77d0dc6aad700683ac51c5e76d4fc356&query=Tarzan&page=1";
+        String url = "https://api.themoviedb.org/3/search/movie?api_key=77d0dc6aad700683ac51c5e76d4fc356&query="+nomFilm+"&page=1";
 
 
         final JsonObjectRequest jsObject = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -93,11 +101,9 @@ public class MainActivity extends Activity implements OnItemClickListener, Adapt
                         JSONObject jsonMovie = jsonArray.getJSONObject(i);
                         JSONArray genreID = jsonMovie.getJSONArray("genre_ids");
 
-                        //A IMPLEMENTER
                         LinkedList<String> genreList = new LinkedList<String>();
                         genreList.addAll(getGenres(genreID));//getGenre --> return LinkedList genre
 
-                        //A IMPLEMENTER
                         String title = jsonMovie.getString("title");
                         String image = jsonMovie.getString("poster_path");
                         String description = jsonMovie.getString("overview");
@@ -107,7 +113,6 @@ public class MainActivity extends Activity implements OnItemClickListener, Adapt
 
                         Movie newMovie = new Movie(image,title, description,origine,date,genreList, rating);
                         listMovie.add(newMovie);
-
                     }
                 } catch (JSONException e) {
                     Log.v("ERREUR", e.toString());
@@ -177,18 +182,5 @@ public class MainActivity extends Activity implements OnItemClickListener, Adapt
 
         }
         return genre;
-    }
-
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-    }
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
     }
 }
