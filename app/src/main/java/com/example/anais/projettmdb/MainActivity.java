@@ -46,8 +46,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button prec = (Button) findViewById(R.id.precedent);
-        Button suiv = (Button) findViewById(R.id.suivant);
+        /*Button prec = (Button) findViewById(R.id.precedent);
+        Button suiv = (Button) findViewById(R.id.suivant);*/
 
         //Récupération des éléemnts passer entre activité
         Intent intent = getIntent();
@@ -66,7 +66,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
                 CustomListViewAdapter adapter = new CustomListViewAdapter(this, R.layout.list_item, listMovie);
                 //On désactive le clique sur le bouton précédent à la première exécution
-                prec.setEnabled(false);
+                //prec.setEnabled(false);
 
                 listView.setAdapter(adapter);
                 listView.setOnItemClickListener(this);
@@ -182,5 +182,16 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
         }
         return genre;
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+    }
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
     }
 }
