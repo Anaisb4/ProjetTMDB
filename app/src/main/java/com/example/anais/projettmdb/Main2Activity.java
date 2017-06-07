@@ -3,25 +3,23 @@ package com.example.anais.projettmdb;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main2Activity extends AppCompatActivity {
-    final String EXTRA_NOMFILM = "nom_film";
-    final String EXTRA_NBRELEM = "nbr_elem";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         final Spinner nbr = (Spinner) findViewById(R.id.nbr);
+        final EditText edit = (EditText) findViewById(R.id.nomFilm);
+
         List<Integer> nbrElem = new ArrayList<>();
         nbrElem.add(5);
         nbrElem.add(10);
@@ -38,9 +36,21 @@ public class Main2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText nomFilm = (EditText) findViewById(R.id.nomFilm);
                 Intent versRecherche = new Intent(Main2Activity.this, MainActivity.class);
-                versRecherche.putExtra(EXTRA_NOMFILM, nomFilm.getText().toString());
-                versRecherche.putExtra(EXTRA_NBRELEM, nbr.getSelectedItem().toString());
-                startActivity(versRecherche);
+                versRecherche.putExtra("nomFilm", nomFilm.getText().toString());
+                versRecherche.putExtra("nbElem", nbr.getSelectedItem().toString());
+
+                if(!edit.getText().toString().equals(""))
+                {
+                    startActivity(versRecherche);
+                }
+
+            }
+        });
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edit.setText("");
             }
         });
     }

@@ -52,8 +52,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         //Récupération des éléemnts passer entre activité
         Intent intent = getIntent();
         if (intent != null) {
-            String nomFilm = intent.getStringExtra(EXTRA_NOMFILM);
-            int nbrElem = Integer.parseInt(intent.getStringExtra(EXTRA_NBRELEM));
+            Log.v("ERREUR", "DEDANS");
+            String nomFilm = intent.getExtras().getString("nomFilm");
+            int nbrElem = Integer.parseInt(intent.getExtras().getString("nbElem"));
             listMovie = new ArrayList<Movie>();
             listGenre = new HashMap<Integer, String>();
 
@@ -64,12 +65,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
             loadGenres();
             getMovies(nomFilm);
 
-                CustomListViewAdapter adapter = new CustomListViewAdapter(this, R.layout.list_item, listMovie);
-                //On désactive le clique sur le bouton précédent à la première exécution
-                //prec.setEnabled(false);
+            CustomListViewAdapter adapter = new CustomListViewAdapter(this, R.layout.list_item, listMovie);
+            //On désactive le clique sur le bouton précédent à la première exécution
+            //prec.setEnabled(false);
 
-                listView.setAdapter(adapter);
-                listView.setOnItemClickListener(this);
+            listView.setAdapter(adapter);
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(this);
         } else {
             return;
         }
