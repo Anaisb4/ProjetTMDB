@@ -54,7 +54,7 @@ public class CustomListViewAdapter extends ArrayAdapter<Movie> {
             holder = new ViewHolder();
             holder.txtGenre = (TextView) convertView.findViewById(R.id.genre);
             holder.txtDate = (TextView) convertView.findViewById(R.id.date);
-            holder.txtNote = (TextView) convertView.findViewById(R.id.note);
+           // holder.txtNote = (TextView) convertView.findViewById(R.id.note);
             holder.txtTitle = (TextView) convertView.findViewById(R.id.title);
             holder.imageView = (ImageView) convertView.findViewById(R.id.icon);
 
@@ -74,7 +74,7 @@ public class CustomListViewAdapter extends ArrayAdapter<Movie> {
 
         holder.txtGenre.setText(genre_tostring);
         holder.txtDate.setText(movie.getDate());
-        holder.txtNote.setText(movie.getRating().toString());
+       //holder.txtNote.setText(movie.getRating().toString());
         holder.txtTitle.setText(movie.getTitle());
         //holder.imageView.setImageResource(movie.getImage());
 
