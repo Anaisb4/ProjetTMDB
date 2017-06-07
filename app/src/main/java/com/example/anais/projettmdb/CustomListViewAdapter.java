@@ -79,6 +79,7 @@ public class CustomListViewAdapter extends ArrayAdapter<Movie> {
         holder.txtDate.setText(movie.getDate());
         holder.txtNote.setRating(movie.getRating());
         holder.txtTitle.setText(movie.getTitle());
+
         Picasso.with(context).load(movie.getImage()).into(holder.imageView);
         //holder.imageView.setImageResource(movie.getImage());
 
