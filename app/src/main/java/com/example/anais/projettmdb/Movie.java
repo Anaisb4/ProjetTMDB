@@ -103,7 +103,7 @@ public class Movie {
                 '}';
     }
 
-    public int comparaRating(Movie m1){
+    public int compareRating(Movie m1){
         if(rating>m1.rating){
             return 1;
         } else if (rating<m1.rating){
@@ -111,10 +111,6 @@ public class Movie {
         } else {
             return 0;
         }
-    }
-
-    public int comparaTitre(Movie m1){
-        return title.compareTo(m1.getTitle());
     }
 
     public int compareDate(Movie m1){

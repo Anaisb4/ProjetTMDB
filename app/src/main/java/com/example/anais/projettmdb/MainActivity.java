@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Spinner nbr = (Spinner) findViewById(R.id.nbr);
+        final Spinner triePar = (Spinner) findViewById(R.id.triePar);
         final EditText edit = (EditText) findViewById(R.id.nomFilm);
         final Context context = this;
 
@@ -44,10 +45,18 @@ public class MainActivity extends AppCompatActivity {
         nbrElem.add(10);
         nbrElem.add(15);
         nbrElem.add(20);
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, nbrElem);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        nbr.setAdapter(adapter);
+        ArrayAdapter<Integer> nbrItem = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, nbrElem);
+        nbrItem.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nbr.setAdapter(nbrItem);
         nbr.setSelection(0);
+
+        List<String> trie = new ArrayList<>();
+        trie.add("Popularité");
+        trie.add("Date");
+        ArrayAdapter<String> listeTrie = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, trie);
+        listeTrie.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        triePar.setAdapter(listeTrie);
+        triePar.setSelection(0);
 
         Button bouton = (Button) findViewById(R.id.search);
         bouton.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 versRecherche.putExtra("nomFilm", nomFilm.getText().toString());
                                 versRecherche.putExtra("nbElem", nbr.getSelectedItem().toString());
+                                versRecherche.putExtra("triePar", triePar.getSelectedItem().toString());
 
                                 JSONArray jsonArray = response.getJSONArray("genres");
 
@@ -97,21 +107,6 @@ public class MainActivity extends AppCompatActivity {
                     });
 
                     queue.add(jsObject);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 }
 
             }

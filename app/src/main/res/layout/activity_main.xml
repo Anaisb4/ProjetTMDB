@@ -7,6 +7,37 @@
     android:background="#2C3E50"
     tools:context="com.example.anais.projettmdb.MainActivity">
 
+    <Spinner
+        android:id="@+id/triePar"
+        android:layout_width="155dp"
+        android:layout_height="23dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="12dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/search"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintLeft_toRightOf="@+id/textView2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nomFilm"
+        app:layout_constraintVertical_bias="0.612" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="8dp"
+        android:text="Trier par :"
+        android:textColor="#ECF0F1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/search"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nomFilm"
+        app:layout_constraintVertical_bias="0.619" />
+
     <EditText
         android:id="@+id/nomFilm"
         android:layout_width="wrap_content"
@@ -45,8 +76,8 @@
 
     <Spinner
         android:id="@+id/nbr"
-        android:layout_width="118dp"
-        android:layout_height="38dp"
+        android:layout_width="108dp"
+        android:layout_height="25dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="12dp"
         android:textAlignment="center"
@@ -57,7 +88,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/search"
-        app:layout_constraintVertical_bias="0.712" />
+        app:layout_constraintVertical_bias="0.166" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -110,7 +141,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="128dp"
+        android:layout_marginLeft="157dp"
         android:layout_marginTop="8dp"
         android:text="Nb résultats / page :"
         android:textColor="#ECF0F1"
@@ -118,6 +149,6 @@
         app:layout_constraintBottom_toTopOf="@+id/search"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nomFilm"
-        app:layout_constraintVertical_bias="0.692" />
+        app:layout_constraintVertical_bias="0.19" />
 
 </android.support.constraint.ConstraintLayout>

@@ -42,6 +42,7 @@ public class ListeActivity extends Activity implements OnItemClickListener {
     int nbrElem;
     int nbrMoviePage;
     RequestQueue request;
+    String triePar;
 
     /** Appelé à la création de l'activité **/
 
@@ -56,6 +57,8 @@ public class ListeActivity extends Activity implements OnItemClickListener {
             String nomFilm = intent.getExtras().getString("nomFilm");
             nomFilm = nomFilm.replace(" ","+");
             nbrElem = Integer.parseInt(intent.getExtras().getString("nbElem"));
+            triePar = intent.getExtras().getString("triePar");
+
             listMovie = new ArrayList<Movie>();
             listMovieAffiche = new ArrayList<Movie>();
 
@@ -98,13 +101,25 @@ public class ListeActivity extends Activity implements OnItemClickListener {
                         }
 
                         tailleListe = listMovie.size();
-
-                        Collections.sort(listMovie, Collections.reverseOrder(new Comparator<Movie>() {
-                            @Override
-                            public int compare(Movie o1, Movie o2) {
-                                return o1.comparaRating(o2);
-                            }
-                        }));
+                        //Trie liste
+                        Log.v("ERREUR",triePar);
+                        if(triePar.equals("Popularité")){
+                            Log.v("ERREUR", "JE TRIE PAR POP");
+                            Collections.sort(listMovie, Collections.reverseOrder(new Comparator<Movie>() {
+                                @Override
+                                public int compare(Movie o1, Movie o2) {
+                                    return o1.compareRating(o2);
+                                }
+                            }));
+                        } else if(triePar.equals("Date")) {
+                            Log.v("ERREUR", "JE TRIE PAR DATE");
+                            Collections.sort(listMovie, Collections.reverseOrder(new Comparator<Movie>() {
+                                @Override
+                                public int compare(Movie o1, Movie o2) {
+                                    return o1.compareDate(o2);
+                                }
+                            }));
+                        }
 
                         //Ajout des movies dans la liste pour l'adapteur AVEC PAGINATION
                         refreshListe(0,nbrElem);
@@ -137,7 +152,6 @@ public class ListeActivity extends Activity implements OnItemClickListener {
                 @Override
                 public void onClick(View v) {
                     nbrAffiche=nbrAffiche-nbrMoviePage-nbrElem;
-                    Log.v("ERREUR","nbrAffiche prec "+nbrAffiche);
                     refreshListe(nbrAffiche,nbrAffiche+nbrElem);
                     CustomListViewAdapter adapter = new CustomListViewAdapter(context, R.layout.list_item, listMovieAffiche);
                     listView.setAdapter(adapter);
@@ -163,11 +177,10 @@ public class ListeActivity extends Activity implements OnItemClickListener {
         final Button precedent = (Button) findViewById(R.id.boutonPrecedent);
         final Button suivant = (Button) findViewById(R.id.boutonSuivant);
 
-        Log.v("ERREUR","refresh de "+deb+" à "+fin);
         listMovieAffiche.clear();
         nbrMoviePage = 0;
         for(int i=deb; i<fin; i++){
-            if(i<=tailleListe) {
+            if(i<tailleListe) {
                 listMovieAffiche.add(listMovie.get(i));
                 nbrAffiche++;
                 nbrMoviePage++;
@@ -175,10 +188,7 @@ public class ListeActivity extends Activity implements OnItemClickListener {
         }
 
         //Si on est revenu à la première page on bloque le bouton précédent
-        Log.v("ERREUR","nbElemAfficcher"+nbrAffiche);
-        Log.v("ERREUR","nbMoviePage"+nbrMoviePage);
         if(nbrAffiche<=nbrElem || deb==0){
-            Log.v("ERREUR","PREMIERE PAGE");
             precedent.setEnabled(false);
         } else {
             precedent.setEnabled(true);
@@ -186,7 +196,6 @@ public class ListeActivity extends Activity implements OnItemClickListener {
 
         //Si on est arriver à la dernière page on bloque le bouton suivant
         if(nbrAffiche>=tailleListe){
-            Log.v("ERREUR","DERNIERE PAGE");
             suivant.setEnabled(false);
         } else {
             suivant.setEnabled(true);
