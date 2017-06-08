@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -34,7 +37,6 @@ public class ListeActivity extends Activity implements OnItemClickListener {
     int tailleListe = 0;
     int nbrAffiche = 0;
     ArrayList<Movie> listMovie;
-
     ListView listView;
     ArrayList<Movie> listMovieAffiche;
     int nbrElem;
@@ -48,9 +50,6 @@ public class ListeActivity extends Activity implements OnItemClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        final Button prec = (Button) findViewById(R.id.boutonPrecedent);
-        final Button suiv = (Button) findViewById(R.id.boutonSuivant);
-
         //Récupération des éléemnts passer entre activité
         Intent intent = getIntent();
         if (intent != null) {
@@ -58,13 +57,11 @@ public class ListeActivity extends Activity implements OnItemClickListener {
             nomFilm = nomFilm.replace(" ","+");
             nbrElem = Integer.parseInt(intent.getExtras().getString("nbElem"));
             listMovie = new ArrayList<Movie>();
-
+            listMovieAffiche = new ArrayList<Movie>();
 
             this.request = Volley.newRequestQueue(this);
 
             listView = (ListView) findViewById(R.id.list);
-            //récupération des catégories
-            //loadGenres();
 
             //récupération des films
 
@@ -100,11 +97,24 @@ public class ListeActivity extends Activity implements OnItemClickListener {
                             listMovie.add(newMovie);
                         }
 
-                        CustomListViewAdapter adapter = new CustomListViewAdapter(context, R.layout.list_item, listMovie);
-
-                        listView.setAdapter(adapter);
-
                         tailleListe = listMovie.size();
+
+                        Collections.sort(listMovie, Collections.reverseOrder(new Comparator<Movie>() {
+                            @Override
+                            public int compare(Movie o1, Movie o2) {
+                                return o1.comparaRating(o2);
+                            }
+                        }));
+
+                        //Ajout des movies dans la liste pour l'adapteur AVEC PAGINATION
+                        refreshListe(0,nbrElem);
+                        nbrAffiche = nbrElem;
+                        if(nbrAffiche>tailleListe){
+                            nbrAffiche=tailleListe;
+                        }
+
+                        CustomListViewAdapter adapter = new CustomListViewAdapter(context, R.layout.list_item, listMovieAffiche);
+                        listView.setAdapter(adapter);
 
                     } catch (JSONException e) {
                         Log.v("ERREUR", e.toString());
@@ -121,8 +131,65 @@ public class ListeActivity extends Activity implements OnItemClickListener {
 
             listView.setOnItemClickListener(this);
 
+            //Retour page précédente
+            final Button precedent = (Button) findViewById(R.id.boutonPrecedent);
+            precedent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    nbrAffiche=nbrAffiche-nbrMoviePage-nbrElem;
+                    Log.v("ERREUR","nbrAffiche prec "+nbrAffiche);
+                    refreshListe(nbrAffiche,nbrAffiche+nbrElem);
+                    CustomListViewAdapter adapter = new CustomListViewAdapter(context, R.layout.list_item, listMovieAffiche);
+                    listView.setAdapter(adapter);
+                }
+            });
+
+            //Retour page suivante
+            final Button suivant = (Button) findViewById(R.id.boutonSuivant);
+            suivant.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    refreshListe(nbrAffiche,nbrAffiche+nbrElem);
+                    CustomListViewAdapter adapter = new CustomListViewAdapter(context, R.layout.list_item, listMovieAffiche);
+                    listView.setAdapter(adapter);
+                }
+            });
         } else {
             finish();
+        }
+    }
+
+    public void refreshListe(int deb, int fin){
+        final Button precedent = (Button) findViewById(R.id.boutonPrecedent);
+        final Button suivant = (Button) findViewById(R.id.boutonSuivant);
+
+        Log.v("ERREUR","refresh de "+deb+" à "+fin);
+        listMovieAffiche.clear();
+        nbrMoviePage = 0;
+        for(int i=deb; i<fin; i++){
+            if(i<=tailleListe) {
+                listMovieAffiche.add(listMovie.get(i));
+                nbrAffiche++;
+                nbrMoviePage++;
+            }
+        }
+
+        //Si on est revenu à la première page on bloque le bouton précédent
+        Log.v("ERREUR","nbElemAfficcher"+nbrAffiche);
+        Log.v("ERREUR","nbMoviePage"+nbrMoviePage);
+        if(nbrAffiche<=nbrElem || deb==0){
+            Log.v("ERREUR","PREMIERE PAGE");
+            precedent.setEnabled(false);
+        } else {
+            precedent.setEnabled(true);
+        }
+
+        //Si on est arriver à la dernière page on bloque le bouton suivant
+        if(nbrAffiche>=tailleListe){
+            Log.v("ERREUR","DERNIERE PAGE");
+            suivant.setEnabled(false);
+        } else {
+            suivant.setEnabled(true);
         }
     }
 
@@ -150,46 +217,9 @@ public class ListeActivity extends Activity implements OnItemClickListener {
         versFicheMovie.putExtra("description", movieSelect.getDescription());
         versFicheMovie.putExtra("date", movieSelect.getDate());
         versFicheMovie.putExtra("rating", movieSelect.getRating());
-        Log.v("ERREUR",movieSelect.getRating()+"");
         versFicheMovie.putExtra("genre", listeGenre);
         startActivity(versFicheMovie);
     }
-
-    /*public void loadGenres()
-    {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.themoviedb.org/3/genre/movie/list?api_key=77d0dc6aad700683ac51c5e76d4fc356&language=fr-FR";
-
-        JsonObjectRequest jsObject = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-                    JSONArray jsonArray = response.getJSONArray("genres");
-
-                    for (int i=0; i< jsonArray.length(); i++) {
-
-                        JSONObject jsonGenre = jsonArray.getJSONObject(i);
-
-                        int id = Integer.parseInt(jsonGenre.getString("id"));
-                        String genre = jsonGenre.getString("name");
-
-                        listGenre.put(id, genre);
-                    }
-                } catch (JSONException e) {
-                    Log.v("ERREUR", e.toString());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.v("ERREUR", error.toString());
-            }
-        });
-
-        queue.add(jsObject);
-
-    }*/
 
     public LinkedList<String> getGenres(JSONArray listGenreMovie)
     {
@@ -205,34 +235,5 @@ public class ListeActivity extends Activity implements OnItemClickListener {
 
         }
         return genre;
-    }
-
-   /* public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On récupère l'élément sélectionner
-        String item = parent.getItemAtPosition(position).toString();
-        Movie movieSelect = null;
-        // On affiche sa fiche
-        Intent versFicheMovie = new Intent(ListeActivity.this,Portfolio.class);
-        for(Movie movie : listMovie){
-            if(movie.getTitle()==item){
-                movieSelect = movie;
-                String listGnre = "";
-                for(String genre : movie.getGenre()){
-                    listGnre=genre+", ";
-                }
-                if(listGnre!=""){listGnre = listGnre.substring(0,listGnre.length()-2);}
-                break;
-            }
-        }
-        versFicheMovie.putExtra("nomFilm", movieSelect.getTitle());
-        versFicheMovie.putExtra("image", movieSelect.getImage());
-        versFicheMovie.putExtra("description", movieSelect.getDescription());
-        versFicheMovie.putExtra("date", movieSelect.getDate());
-        versFicheMovie.putExtra("rating", movieSelect.getRating());
-        versFicheMovie.putExtra("genre", listGnre);
-        startActivity(versFicheMovie);
-    }*/
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
     }
 }

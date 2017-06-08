@@ -102,4 +102,22 @@ public class Movie {
                 ", rating=" + rating +
                 '}';
     }
+
+    public int comparaRating(Movie m1){
+        if(rating>m1.rating){
+            return 1;
+        } else if (rating<m1.rating){
+            return  -1;
+        } else {
+            return 0;
+        }
+    }
+
+    public int comparaTitre(Movie m1){
+        return title.compareTo(m1.getTitle());
+    }
+
+    public int compareDate(Movie m1){
+        return date.compareTo(m1.getDate());
+    }
 }
